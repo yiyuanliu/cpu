@@ -20,12 +20,12 @@ begin
     jump <= jump_r or jump_i;
     jaddr <= jaddr_r when jump_r = '1' else jaddr_i;
     next_addr <= std_logic_vector(unsigned(addr_r) + 4) when jump = '0' else jaddr;
-    addr_o <= addr_r;
+    addr_o <= next_addr;
 
     process (clk_i, rst_i)
     begin
         if (rst_i = '0') then
-            addr_r <= (31 => '1', others => '0'); -- ram1 : 0x80000000 - 0x803FFFFF;
+            addr_r <= std_logic_vector('1' & to_unsigned(0, 31) - 4); -- ram1 : 0x80000000 - 0x803FFFFF;
             jump_r <= '0';
             jaddr_r <= (others => '0');
         elsif (clk_i'event and clk_i = '1') then

@@ -262,7 +262,9 @@ architecture behavioral of cpu_top is
 			ack_o : out std_logic;
 
 			rxd_i : in std_logic;
-			txd_o : out std_logic
+			txd_o : out std_logic;
+
+			fifo_send_rd, fifo_send_we : out std_logic_vector(2 downto 0)
 		);
 	end component uart_ctrl;
 
@@ -373,7 +375,7 @@ begin
 
 	-- '1000 0000 1000 0000 1111 1111 1111 1111' => '8080ffff'
 	leds(3 downto 0) <= we_cnt;
-	leds(11 downto 8) <= state_cnt;
+	leds(7 downto 4) <= state_cnt;
 
 	pc_ins : pc
 	port map (
@@ -601,7 +603,8 @@ begin
 		data_o => uart_smmu_rd_data,
 		ack_o => uart_smmu_ack,
 		rxd_i => rxd,
-		txd_o => txd
+		txd_o => txd,
+		fifo_send_rd => leds(15 downto 13), fifo_send_we => leds(12 downto 10)
 	);
 	
 	clk <= clk_50M;

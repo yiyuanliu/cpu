@@ -8,7 +8,7 @@ entity fifo_ctrl is
 		we_i, rd_i : in std_logic;
 		full_o, empty_o : out std_logic;
 		we_addr_o, rd_addr_o : out std_logic_vector(1 downto 0);
-		we_ptr, rd_ptr : out unsigned(2 downto 0)
+		we_ptr, rd_ptr : out std_logic_vector(2 downto 0)
 	);
 end entity fifo_ctrl;
 
@@ -18,8 +18,8 @@ architecture behavioral of fifo_ctrl is
 	signal full_flag, empty_flag : std_logic;
 begin
 
-we_ptr <= we_ptr_reg;
-rd_ptr <= rd_prt_reg;
+we_ptr <= std_logic_vector(we_ptr_reg);
+rd_ptr <= std_logic_vector(rd_prt_reg);
 	process(clk_i, rst_i)
 	begin
 		if (rst_i = '0') then

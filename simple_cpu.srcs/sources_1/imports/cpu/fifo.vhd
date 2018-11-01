@@ -9,7 +9,9 @@ entity fifo is
 		we_i, rd_i : in std_logic;
 		we_data_i : in std_logic_vector(7 downto 0);
 		rd_data_o : out std_logic_vector(7 downto 0);
-		full_o, empty_o : out std_logic
+		full_o, empty_o : out std_logic;
+
+		rd_addr3, we_addr3 : out std_logic_vector(2 downto 0)
 	);
 end entity fifo;
 
@@ -19,7 +21,8 @@ architecture behavioral of fifo is
 			clk_i, rst_i : in std_logic;
 			we_i, rd_i : in std_logic;
 			full_o, empty_o : out std_logic;
-			we_addr_o, rd_addr_o : out std_logic_vector(1 downto 0)
+			we_addr_o, rd_addr_o : out std_logic_vector(1 downto 0);
+			we_ptr, rd_ptr : out std_logic_vector(2 downto 0)
 		);
 	end component fifo_ctrl;
 
@@ -44,7 +47,8 @@ begin
 			full_o => full_o,
 			empty_o => empty_o,
 			we_addr_o => we_addr,
-			rd_addr_o => rd_addr
+			rd_addr_o => rd_addr,
+			we_ptr => we_addr3, rd_ptr => rd_addr3
 		);
 	fifo_reg_ins : fifo_reg
 		port map (

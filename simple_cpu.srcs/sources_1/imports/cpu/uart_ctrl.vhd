@@ -16,7 +16,9 @@ entity uart_ctrl is
 		ack_o : out std_logic;
 
 		rxd_i : in std_logic;
-		txd_o : out std_logic
+		txd_o : out std_logic;
+
+		fifo_send_rd, fifo_send_we : out std_logic_vector(2 downto 0)
 	);
 end entity uart_ctrl;
 
@@ -49,7 +51,9 @@ architecture behavioral of uart_ctrl is
 			we_i, rd_i : in std_logic;
 			we_data_i : in std_logic_vector(7 downto 0);
 			rd_data_o : out std_logic_vector(7 downto 0);
-			full_o, empty_o : out std_logic
+			full_o, empty_o : out std_logic;
+
+			rd_addr3, we_addr3 : out std_logic_vector(2 downto 0)
 		);
 	end component fifo;
 
@@ -89,7 +93,9 @@ begin
 			we_data_i => data_i,
 			rd_data_o => txd_data,
 			full_o => fifo_send_full,
-			empty_o => fifo_send_empty
+			empty_o => fifo_send_empty,
+
+			rd_addr3 => fifo_send_we, we_addr3 => fifo_send_rd
 		);
 	txd_start <= (not txd_busy) and (not fifo_send_empty);
 	we_send_fifo <= uart_op_send and not fifo_send_full;
